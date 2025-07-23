@@ -1,0 +1,22 @@
+parent:
+  start:
+    new: "Hello! This is a Telegram posting bot"
+    old: "Hello, {username}! Here you can manage your bots"
+  button:
+    add: "Add your bot"
+    list: "Bot list"
+    help: "Help"
+    undo: "Cancel"
+  error:
+    update: "Error for update {update_id}:"
+    400: "Failed to process your request"
+    403: "Bot was blocked by the user"
+    429: "Too many requests, please try again later"
+    default: "An error occurred while processing the request"
+  add:
+    exception: |
+      Could not get bot data from Telegram.
+      Please make sure you copied a real existing token and try again
+    is_user: "This is a user, not a bot!"
+    attach: "Great! Attaching bot {username}..."
+    is_not_token: "This doesn't look like a valid token. Please try again"

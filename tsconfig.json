@@ -16,7 +16,16 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@/*": ["src/*"],
+      "@interface/*": ["src/interfaces/*"],
+      "@middleware/*": ["src/use/*"],
+      "@dto/*": ["src/dto/*"],
+      "@decorator/*": ["src/decorators/*"],
+      "@model/*": ["src/dbmodel/*"],
+      "@config/*": ["src/config/*"],
+    }
   },
   "include": ["src/**/*", "test/**/*"]
 }

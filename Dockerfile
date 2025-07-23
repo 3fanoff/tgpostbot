@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:19-alpine
 LABEL authors="Michael Trifanov"
 #WORKDIR /usr/src/app-build
 #COPY package*.json .

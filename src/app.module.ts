@@ -1,28 +1,31 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ArticleModule } from './modules/article/article.module';
-import { entities } from './dbmodel';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { ArticleModule } from '@/modules/article/article.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-
-const configService = new ConfigService();
+import { BotParentModule } from '@/modules/bot.parent/bot.parent.module';
+import databaseConfig from '@config/database.config';
+import { I18nModule } from 'nestjs-i18n';
+import i18nConfig from '@config/i18n.config';
 
 @Module({
     imports: [
         ConfigModule.forRoot(),
-        TypeOrmModule.forRoot({
-            type: 'postgres',
-            host: configService.get<string>('DB_HOST'),
-            port: configService.get<number>('DB_PORT'),
-            database: configService.get<string>('DB_NAME'),
-            username: configService.get<string>('DB_USER'),
-            password: configService.get<string>('DB_PASSWORD'),
-            synchronize: true,
-            entities,
-            retryAttempts: 20,
+        TypeOrmModule.forRootAsync({
+            imports: [
+                ConfigModule.forRoot({
+                    load: [databaseConfig],
+                }),
+            ],
+            useFactory: (configService: ConfigService) => {
+                return configService.get('database') as TypeOrmModuleOptions;
+            },
+            inject: [ConfigService],
         }),
+        I18nModule.forRoot(i18nConfig()),
         ArticleModule,
+        BotParentModule,
     ],
     controllers: [AppController],
     providers: [AppService],

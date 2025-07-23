@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ArticleService } from './article.service';
-import { ArticleDto } from '../../dto/article.dto';
-import { ArticleEntity } from '../../dbmodel/article.entity';
-import { AuthorEntity } from '../../dbmodel/author.entity';
+import { ArticleDto } from '@dto/article.dto';
+import { ArticleEntity } from '@model/article.entity';
+import { AuthorEntity } from '@model/author.entity';
 import { isNil, isNumber } from '@nestjs/common/utils/shared.utils';
 import { DeleteResult, QueryFailedError } from 'typeorm';
 import { InternalServerErrorException, NotFoundException } from '@nestjs/common';
