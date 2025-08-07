@@ -20,14 +20,15 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@nestjs/axios": "^4.0.1",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/typeorm": "^11.0.0",
+    "axios": "^1.11.0",
     "js-yaml": "^4.1.0",
-    "nestjs-axios-promise": "^2.0.0",
     "nestjs-i18n": "^10.5.1",
     "nestjs-telegraf": "^2.9.1",
     "pg": "^8.16.3",
@@ -76,7 +77,10 @@
       "^@dto/(.*)$": "<rootDir>/dto/$1",
       "^@decorator/(.*)$": "<rootDir>/decorators/$1",
       "^@model/(.*)$": "<rootDir>/dbmodel/$1",
-      "^@config/(.*)$": "<rootDir>/config/$1"
+      "^@config/(.*)$": "<rootDir>/config/$1",
+      "^@lib/(.*)$": "<rootDir>/lib/$1",
+      "^@populator/(.*)$": "<rootDir>/convert/populators/$1",
+      "^@converter/(.*)$": "<rootDir>/convert/converters/$1"
     },
     "rootDir": "src",
     "testRegex": ".*\\.spec\\.ts$",

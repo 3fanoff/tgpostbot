@@ -25,6 +25,9 @@
       "@decorator/*": ["src/decorators/*"],
       "@model/*": ["src/dbmodel/*"],
       "@config/*": ["src/config/*"],
+      "@lib/*": ["src/lib/*"],
+      "@populator/*": ["src/convert/populators/*"],
+      "@converter/*": ["src/convert/converters/*"],
     }
   },
   "include": ["src/**/*", "test/**/*"]

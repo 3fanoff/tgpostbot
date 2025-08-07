@@ -1,25 +1,23 @@
 import { I18nService, TranslateOptions } from 'nestjs-i18n';
 import { I18nTranslations } from '@/gensrc/i18n.types';
 import { Logger } from '@nestjs/common';
-import { Context, Session, UpdateContext } from 'telegraf';
 import { PathImpl2 } from '@nestjs/config';
 import { NextFunction } from 'express';
-import { Update } from '@telegraf/types';
+import { isNil } from '@nestjs/common/utils/shared.utils';
+import { BotContext } from '@interface/bot';
 
 export function i18nTelegrafMiddleware(i18nService: I18nService) {
     const logger = new Logger('middleware');
-    const findLanguage = (ctx: Context<UpdateContext, Session>): string | null | undefined => {
+    const findLanguage = (ctx: BotContext) => {
         logger.debug(ctx.session);
         if (ctx.session && ctx.session.language) {
             return ctx.session.language;
         }
         try {
-            const chatMemberUpdate = ctx.update as UpdateContext & Update.MyChatMemberUpdate;
-            if (chatMemberUpdate.my_chat_member) {
-                ctx.session.language = chatMemberUpdate.my_chat_member.from.language_code;
-            }
-            else if (chatMemberUpdate.message) {
-                ctx.session.language = ctx.update.message.from.language_code;
+            //let lang: UseLanguage;
+            const lang = ctx.from?.language_code;
+            if (lang) {
+                ctx.session.language = i18nService.resolveLanguage(lang);
             }
             return ctx.session.language;
         } catch (e) {
@@ -28,23 +26,20 @@ export function i18nTelegrafMiddleware(i18nService: I18nService) {
         }
     };
 
-    return (ctx: Context<UpdateContext, Session>, next: NextFunction) => {
-        const lang = findLanguage(ctx);
-
+    return (ctx: BotContext, next: NextFunction) => {
         ctx.i18n = {
             t: (key: PathImpl2<I18nTranslations>, options?: TranslateOptions) => {
+                const lang = findLanguage(ctx);
                 const opts = lang ? { lang, ...options } : { ...options };
                 return i18nService.translate(key, opts);
             },
-            changeLanguage: (lang: string) => {
-                if (!ctx.session) {
-                    ctx.session = { language: lang };
-                }
+            changeLanguage: (lang: string): boolean => {
                 if (i18nService.getSupportedLanguages().includes(lang)) {
-                    ctx.session.language = lang;
+                    ctx.session.language = i18nService.resolveLanguage(lang);
                 } else {
                     ctx.session.language = null;
                 }
+                return !isNil(ctx.session.language);
             },
         };
 

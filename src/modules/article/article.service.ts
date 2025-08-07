@@ -1,9 +1,9 @@
 import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ArticleEntity } from '../../dbmodel/article.entity';
+import { ArticleEntity } from '@model/article.entity';
 import { QueryFailedError, Repository } from 'typeorm';
-import { AuthorEntity } from '../../dbmodel/author.entity';
-import { ArticleDto } from '../../dto/article.dto';
+import { AuthorEntity } from '@model/author.entity';
+import { ArticleDto } from '@dto/article.dto';
 
 @Injectable()
 export class ArticleService {

@@ -1,9 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { BotParentController } from './bot.parent.controller';
+import { BotParentUpdate } from './bot.parent.update';
 import { BotParentService } from '@/modules/bot.parent/bot.parent.service';
 import { BotParentSessionService } from '@/modules/bot.parent/bot.parent.session.service';
 import { Telegraf } from 'telegraf';
 import { Module } from '@nestjs/common';
+import { BotParentContextService } from "./bot.parent.context.service";
+import { BotActionManager } from "@lib/bot.action.manager";
 
 /*const mockTelegraf = {
     bot: {},
@@ -12,7 +14,7 @@ import { Module } from '@nestjs/common';
     },
 };*/
 
-describe('BotParentController', () => {
+describe('BotParentUpdate', () => {
     const mockTelegrafModule = () => {
         jest.mock('telegraf');
 
@@ -29,25 +31,31 @@ describe('BotParentController', () => {
         return MockTelegrafModule;
     };
 
-    let controller: BotParentController;
+    let controller: BotParentUpdate;
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
             imports: [mockTelegrafModule()],
-            controllers: [BotParentController],
+            controllers: [BotParentUpdate],
             providers: [
-                {
-                    provide: BotParentService,
-                    useValue: {},
-                },
                 {
                     provide: BotParentSessionService,
                     useValue: {},
                 },
+                {
+                    provide: BotParentContextService,
+                    useValue: {},
+                },
+                {
+                    provide: BotParentService,
+                    useValue: {},
+                },
+                BotActionManager,
+                ...BotParentUpdate.composers
             ],
         }).compile();
 
-        controller = module.get<BotParentController>(BotParentController);
+        controller = module.get<BotParentUpdate>(BotParentUpdate);
     });
 
     it('should be defined', () => {

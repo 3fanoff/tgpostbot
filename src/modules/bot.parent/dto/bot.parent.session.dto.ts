@@ -6,7 +6,7 @@ export class BotParentSessionDTO implements BotParent.BotData {
     allowAction: Set<number> = new Set<number>();
     messages: Array<{
         id: number;
-        type: string;
+        type: BotParent.MessageType;
         bot: boolean;
     }>;
 }

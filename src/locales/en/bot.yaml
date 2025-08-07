@@ -1,22 +1,40 @@
 parent:
   start:
     new: "Hello! This is a Telegram posting bot"
-    old: "Hello, {username}! Here you can manage your bots"
+    old: "Hi, {username}! Here you can manage your bots"
   button:
-    add: "Add your bot"
-    list: "Bot list"
-    help: "Help"
-    undo: "Cancel"
+    add: "➕ Add your bot"
+    list: "📚 Bot list"
+    help: "ℹ️ Help"
+    undo: "↩️ Cancel"
+    choose.lang: "🌐 Change language"
+  command:
+    lang: "🌐 Choose another language"
+    newbot: "Add your bot"
+    list: "List of my bots"
+    help: "Bot usage help"
+  language:
+    ru: "Russian (rus)"
+    en: "English (eng)"
+    applied: "Language set to: *{lang}*"
+    applied.keyboard: "Menu language changed"
   error:
     update: "Error for update {update_id}:"
     400: "Failed to process your request"
-    403: "Bot was blocked by the user"
-    429: "Too many requests, please try again later"
+    403: "Bot blocked by the user"
+    429: "Too many requests, try again later"
     default: "An error occurred while processing the request"
   add:
+    send: "Send your bot token in the next message"
     exception: |
-      Could not get bot data from Telegram.
-      Please make sure you copied a real existing token and try again
-    is_user: "This is a user, not a bot!"
-    attach: "Great! Attaching bot {username}..."
-    is_not_token: "This doesn't look like a valid token. Please try again"
+      Could not fetch bot data from Telegram.
+      Make sure you copied a valid token and try again
+    orm_exception: |
+      An error occurred while linking the bot.
+      Try sending the token again; if the error persists, contact support
+    is_user: "This is a user, not a bot! Try a different token"
+    attach: "Great! Linking the bot {username}..."
+    success: "Bot @{username} has been successfully added!"
+    is_not_token: "This doesn’t look like a token. Please try again"
+  help:
+    text: "<b>Help text</b>\nMultiple paragraphs"

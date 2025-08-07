@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TelegrafModule } from 'nestjs-telegraf';
-import { BotParentController } from './bot.parent.controller';
-import { AxiosModule } from 'nestjs-axios-promise';
+import { BotParentUpdate } from './bot.parent.update';
+import { HttpModule } from '@nestjs/axios';
 import { I18nService } from 'nestjs-i18n';
 import { TelegrafMiddleware } from '@middleware/telegraf.middleware';
 import { i18nTelegrafMiddleware } from '@middleware/i18n.middleware';
@@ -9,9 +9,17 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { BotParentService } from './bot.parent.service';
 import { session } from 'telegraf';
 import { BotParentSessionService } from './bot.parent.session.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { BotUserEntity } from '@model/bot.user.entity';
+import { BotEntity } from '@model/bot.entity';
+import { ChannelEntity } from '@model/channel.entity';
+import { BotGetMeConverter } from '@converter/bot.get.me.converter';
+import { BotActionManager } from '@lib/bot.action.manager';
+import { BotParentContextService } from './bot.parent.context.service';
 
 @Module({
     imports: [
+        TypeOrmModule.forFeature([BotUserEntity, BotEntity, ChannelEntity]),
         TelegrafModule.forRootAsync({
             botName: 'PARENT_POST_BOT',
             imports: [ConfigModule],
@@ -29,9 +37,18 @@ import { BotParentSessionService } from './bot.parent.session.service';
                 };
             },
         }),
-        AxiosModule.register({}),
+        HttpModule,
     ],
-    controllers: [BotParentController],
-    providers: [BotParentService, BotParentSessionService],
+    controllers: [],
+    providers: [
+        BotParentUpdate,
+        BotParentService,
+        BotParentSessionService,
+        BotParentContextService,
+        BotGetMeConverter,
+        ...BotGetMeConverter.providers,
+        BotActionManager,
+        ...BotParentUpdate.composers,
+    ],
 })
 export class BotParentModule {}

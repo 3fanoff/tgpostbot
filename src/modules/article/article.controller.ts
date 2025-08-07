@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, ParseBoolPipe, ParseIntPipe, Post, Query } from '@nestjs/common';
 import { ArticleService } from './article.service';
-import { ArticleDto } from '../../dto/article.dto';
+import { ArticleDto } from '@dto/article.dto';
 
 @Controller('article')
 export class ArticleController {
