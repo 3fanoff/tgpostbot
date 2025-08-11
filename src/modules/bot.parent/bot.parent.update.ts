@@ -36,7 +36,7 @@ export class BotParentUpdate implements OnModuleInit {
 
     onModuleInit(): any {
         this.bot.catch(async (err, ctx: BotContext) => this.globalCatch(err, ctx));
-        this.bot.use((ctx: BotMemberContext, next: NextFunction) => this.sessionMiddleware(ctx, next));
+        this.bot.use(async (ctx: BotMemberContext, next: NextFunction) => this.sessionMiddleware(ctx, next));
 
         this.bot
             .use(this.startComposer.middleware())
@@ -67,7 +67,7 @@ export class BotParentUpdate implements OnModuleInit {
                     replyMessage = await ctx.reply(ctx.i18n.t('bot.parent.error.default'));
             }
             if (replyMessage) {
-                this.botSessionService.addMessage(ctx, 'error', true, replyMessage.message_id);
+                this.botSessionService.addMessage(ctx, 'error', true, replyMessage.message_id, replyMessage.text);
             }
         } else {
             this.logger.error('Неизвестная ошибка:', err);
@@ -77,7 +77,6 @@ export class BotParentUpdate implements OnModuleInit {
     async sessionMiddleware(ctx: BotMessageContext, next: NextFunction): Promise<void>;
     async sessionMiddleware(ctx: BotMemberContext, next: NextFunction): Promise<void>;
     async sessionMiddleware(ctx: BotMessageContext | BotMemberContext, next: NextFunction): Promise<void> {
-        //if (!ctx.session.bot) ctx.session.bot = new BotParentSessionDTO();
         if (ctx.myChatMember?.new_chat_member.status === 'kicked') {
             if (this.botSessionService.hasBotSession(ctx)) {
                 this.botSessionService.resetAllowActions(ctx);
@@ -90,15 +89,15 @@ export class BotParentUpdate implements OnModuleInit {
             await this.botSessionService.initSession(ctx);
         }
 
-        this.logger.debug(this.botSessionService.getMessages(ctx));
-
-        if (ctx.msg) {
-            if (ctx.msg.text === '/start') {
+        if (ctx.message) {
+            if (ctx.message.text === '/start') {
                 this.botSessionService.clearMessages(ctx);
             } else {
-                this.botSessionService.addMessage(ctx, 'message', false, ctx.msgId as number);
+                this.botSessionService.addMessage(ctx, 'message', false, ctx.message.message_id, ctx.message.text);
             }
         }
+        this.logger.debug(this.botSessionService.getMessages(ctx));
+
         return next();
     }
 }

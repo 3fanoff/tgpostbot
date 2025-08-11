@@ -60,13 +60,15 @@ export class BotParentAddbotComposer extends AbstractBotComposer {
             }
         } catch (e) {
             replyMessage = await ctx.reply(
-                ctx.i18n.t(this.botParentService.catchAddNewBotReply(e as QueryFailedError<DriverError> | InvalidArgumentException | UnauthorizedException)),
+                ctx.i18n.t(
+                    this.botParentService.catchAddNewBotReply(e as QueryFailedError<DriverError> | InvalidArgumentException | UnauthorizedException),
+                ),
                 { parse_mode: 'HTML' },
             );
             this.botSessionService.setAllowActions(ctx, [availableActions.ALLOW_TOKEN, availableActions.UNDO]);
         }
 
-        this.botSessionService.addMessage(ctx, 'reply', true, replyMessage.message_id);
+        this.botSessionService.addMessage(ctx, 'reply', true, replyMessage.message_id, replyMessage.text);
     }
 
     private async createBotAndAddToUser(ctx: BotContext, botDto: BotDto, userID: number, username?: string) {
@@ -74,9 +76,9 @@ export class BotParentAddbotComposer extends AbstractBotComposer {
 
         if (this.botSessionService.isNewUser(ctx)) {
             const user: BotUserEntity = await this.botParentService.createUser(userID, username);
-            await this.botParentService.addNewBotToUser(bot, user);
+            await this.botParentService.addBotOwner(bot, user);
         } else {
-            await this.botParentService.addNewBotToUserByUserId(bot, userID);
+            await this.botParentService.addBotOwnerByUserId(bot, userID);
         }
 
         this.botSessionService.setIsNewUser(ctx, false);

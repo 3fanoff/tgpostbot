@@ -1,13 +1,13 @@
-import { Column, Entity, OneToMany } from 'typeorm';
-import { BotEntity } from '@model/bot.entity';
+import { Entity, OneToMany } from 'typeorm';
 import { AbstractBotEntity } from '@model/abstract.bot.entity';
-import { USER_ROLE } from '@lib/bot.const';
+import { CredentialEntity } from './credential.entity';
+import { BotEntity } from './bot.entity';
 
 @Entity('bot_user')
 export class BotUserEntity extends AbstractBotEntity {
-    @Column({ type: 'enum', enum: USER_ROLE, default: USER_ROLE.ADMINISTRATOR })
-    role: USER_ROLE;
+    @OneToMany(() => BotEntity, (bot) => bot.owner)
+    own: BotEntity[];
 
-    @OneToMany(() => BotEntity, (bot) => bot.user)
-    bots: BotEntity[];
+    @OneToMany(() => CredentialEntity, (cred) => cred.user)
+    credentials: CredentialEntity[];
 }

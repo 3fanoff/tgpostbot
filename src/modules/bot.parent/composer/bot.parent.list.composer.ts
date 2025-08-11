@@ -35,7 +35,7 @@ export class BotParentListComposer extends AbstractBotComposer {
     }
 
     async onBotsListAction(ctx: BotMessageContext) {
-        const botList = await this.botParentService.getListOfBotsByUserId(ctx.update.message.from.id);
+        const botList = await this.botParentService.getListOfOwnBotsByUserId(ctx.update.message.from.id);
         if (botList.length) {
             const keyboardBotList = Markup.inlineKeyboard(
                 botList.map((bot) => {

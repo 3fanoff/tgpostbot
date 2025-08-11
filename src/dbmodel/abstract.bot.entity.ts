@@ -2,7 +2,7 @@ import { Column, CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } fr
 
 export abstract class AbstractBotEntity {
     @PrimaryGeneratedColumn('uuid')
-    pk: number;
+    pk: string;
 
     @Column({ type: 'bigint', unique: true })
     id: number;

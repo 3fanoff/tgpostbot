@@ -62,7 +62,7 @@ export class BotParentLangComposer extends AbstractBotComposer {
                     BotParentKeyboard.staticKeyboard(ctx.i18n, { showLang: false }).resize(true),
                 );
 
-                this.botSessionService.addMessage(ctx, 'reply', true, keyboardMessage.message_id);
+                this.botSessionService.addMessage(ctx, 'reply', true, keyboardMessage.message_id, ctx.i18n.t('bot.parent.language.applied.keyboard'));
             } else {
                 const startMessage = this.botSessionService.getMessages(ctx)?.find((message) => message.type === 'start_reply');
                 if (startMessage) {

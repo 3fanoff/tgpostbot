@@ -43,7 +43,7 @@ export class BotParentNewbotComposer extends AbstractBotComposer {
         this.botSessionService.setAllowActions(ctx, [availableActions.UNDO, availableActions.ALLOW_TOKEN]);
 
         const replyMessage = await ctx.reply(ctx.i18n.t('bot.parent.add.send'), BotParentKeyboard.inlineUndoKeyboard(ctx.i18n, 'undo_add_new_bot'));
-        this.botSessionService.addMessage(ctx, 'reply', true, replyMessage.message_id);
+        this.botSessionService.addMessage(ctx, 'reply', true, replyMessage.message_id, replyMessage.text);
     }
 
     async onUndoNewBot(ctx: BotContext) {

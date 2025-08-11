@@ -16,10 +16,11 @@ import { ChannelEntity } from '@model/channel.entity';
 import { BotGetMeConverter } from '@converter/bot.get.me.converter';
 import { BotActionManager } from '@lib/bot.action.manager';
 import { BotParentContextService } from './bot.parent.context.service';
+import { CredentialEntity } from '@model/credential.entity';
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([BotUserEntity, BotEntity, ChannelEntity]),
+        TypeOrmModule.forFeature([BotUserEntity, BotEntity, ChannelEntity, CredentialEntity]),
         TelegrafModule.forRootAsync({
             botName: 'PARENT_POST_BOT',
             imports: [ConfigModule],

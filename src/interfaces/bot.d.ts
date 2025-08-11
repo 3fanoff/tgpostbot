@@ -19,6 +19,7 @@ interface BotDataMessage {
     type: MessageType;
     bot: boolean;
     id: number;
+    text?: string;
 }
 
 interface BotData {

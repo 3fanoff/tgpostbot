@@ -85,12 +85,13 @@ export class BotParentSessionService {
         this.setAllowActions(ctx, BotParentSessionService.DEFAULT_ACTIONS);
     }
 
-    public addMessage(ctx: BotContext, type: BotParent.MessageType, bot: boolean, id: number) {
+    public addMessage(ctx: BotContext, type: BotParent.MessageType, bot: boolean, id: number, text: string) {
         if (!this.hasBotSession(ctx)) return;
         ctx.session.bot.messages.push({
             type,
             bot,
             id,
+            text,
         });
     }
 

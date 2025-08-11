@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { BotParentUpdate } from './bot.parent.update';
-import { BotParentService } from '@/modules/bot.parent/bot.parent.service';
-import { BotParentSessionService } from '@/modules/bot.parent/bot.parent.session.service';
+import { BotParentUpdate } from '../bot.parent.update';
+import { BotParentService } from '../bot.parent.service';
+import { BotParentSessionService } from '../bot.parent.session.service';
 import { Telegraf } from 'telegraf';
 import { Module } from '@nestjs/common';
-import { BotParentContextService } from "./bot.parent.context.service";
-import { BotActionManager } from "@lib/bot.action.manager";
+import { BotParentContextService } from '../bot.parent.context.service';
+import { BotActionManager } from '@lib/bot.action.manager';
 
 /*const mockTelegraf = {
     bot: {},
@@ -36,8 +36,9 @@ describe('BotParentUpdate', () => {
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
             imports: [mockTelegrafModule()],
-            controllers: [BotParentUpdate],
+            controllers: [],
             providers: [
+                BotParentUpdate,
                 {
                     provide: BotParentSessionService,
                     useValue: {},
@@ -51,7 +52,7 @@ describe('BotParentUpdate', () => {
                     useValue: {},
                 },
                 BotActionManager,
-                ...BotParentUpdate.composers
+                ...BotParentUpdate.composers,
             ],
         }).compile();
 

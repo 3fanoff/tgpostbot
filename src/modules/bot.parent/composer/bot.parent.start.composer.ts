@@ -35,7 +35,7 @@ export class BotParentStartComposer extends AbstractBotComposer {
         return false;
     };
 
-    private async onStartAction(ctx: BotMessageContext) {
+    public async onStartAction(ctx: BotMessageContext) {
         const { username } = ctx.msg.from;
 
         await this.botContextService.setMenuCommandList<BotMessageContext, commands>(ctx, defaultMenuCommands);
@@ -51,13 +51,13 @@ export class BotParentStartComposer extends AbstractBotComposer {
             replyMessage = await ctx.reply(ctx.i18n.t('bot.parent.start.new'), inlineKeyboard);
         }
 
-        this.botSessionService.addMessage(ctx, 'start_reply', true, replyMessage.message_id);
+        this.botSessionService.addMessage(ctx, 'start_reply', true, replyMessage.message_id, replyMessage.text);
     }
 
     async onHelpDialog(ctx: BotContext) {
         this.botSessionService.resetAllowActions(ctx);
         const replyMessage = await ctx.replyWithHTML(ctx.i18n.t('bot.parent.help.text'));
 
-        this.botSessionService.addMessage(ctx, 'help', true, replyMessage.message_id);
+        this.botSessionService.addMessage(ctx, 'help', true, replyMessage.message_id, replyMessage.text);
     }
 }

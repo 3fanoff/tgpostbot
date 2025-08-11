@@ -3,5 +3,6 @@ import { AuthorEntity } from './author.entity';
 import { BotUserEntity } from '@model/bot.user.entity';
 import { BotEntity } from '@model/bot.entity';
 import { ChannelEntity } from '@model/channel.entity';
+import { CredentialEntity } from './credential.entity';
 
-export const entities = [ArticleEntity, AuthorEntity, BotUserEntity, BotEntity, ChannelEntity];
+export const entities = [ArticleEntity, AuthorEntity, BotUserEntity, BotEntity, ChannelEntity, CredentialEntity];
