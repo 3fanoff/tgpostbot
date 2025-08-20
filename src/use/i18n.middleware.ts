@@ -4,12 +4,12 @@ import { Logger } from '@nestjs/common';
 import { PathImpl2 } from '@nestjs/config';
 import { NextFunction } from 'express';
 import { isNil } from '@nestjs/common/utils/shared.utils';
-import { BotContext } from '@interface/bot';
+import { BotBaseSession, BotContext } from '@interface/bot';
 
-export function i18nTelegrafMiddleware(i18nService: I18nService) {
-    const logger = new Logger('middleware');
-    const findLanguage = (ctx: BotContext) => {
-        logger.debug(ctx.session);
+export function i18nTelegrafMiddleware<S extends BotBaseSession>(i18nService: I18nService) {
+    const logger = new Logger('i18nTelegrafMiddleware');
+    const findLanguage = (ctx: BotContext<S>) => {
+        //logger.debug(ctx.session);
         if (ctx.session && ctx.session.language) {
             return ctx.session.language;
         }
@@ -26,7 +26,7 @@ export function i18nTelegrafMiddleware(i18nService: I18nService) {
         }
     };
 
-    return (ctx: BotContext, next: NextFunction) => {
+    return (ctx: BotContext<S>, next: NextFunction) => {
         ctx.i18n = {
             t: (key: PathImpl2<I18nTranslations>, options?: TranslateOptions) => {
                 const lang = findLanguage(ctx);

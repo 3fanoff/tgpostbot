@@ -6,6 +6,7 @@ LABEL authors="Michael Trifanov"
 
 WORKDIR /usr/src/app
 COPY package*.json .
+ENV TZ=Europe/Moscow
 RUN npm install && npm install -g @nestjs/cli
 COPY . .
 EXPOSE 3000

@@ -81,8 +81,10 @@ export class BotParentService {
     }
 
     async addBotOwner(bot: BotEntity, owner: BotUserEntity) {
+        console.log('before add bot owner');
         bot.owner = owner;
         await this.botRepository.save(bot);
+        console.log('after add bot owner');
     }
 
     async addBotUser(bot: BotEntity, user: BotUserEntity, role: USER_ROLE) {

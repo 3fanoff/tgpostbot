@@ -12,6 +12,16 @@ export class InvalidArgumentException extends Error {
 
 type VoidFunction = () => void;
 
+function voidToNull(obj: object) {
+    for (const key in obj) {
+        if (!Object.prototype.hasOwnProperty.call(obj, key)) break;
+        if (obj[key] === undefined) {
+            obj[key] = null;
+        }
+    }
+    return obj;
+}
+
 export function ValidateBotToken(parameterIndex: number) {
     return function (target: any, key: string, descriptor: PropertyDescriptor) {
         const method: VoidFunction = descriptor.value as VoidFunction;
@@ -24,6 +34,19 @@ export function ValidateBotToken(parameterIndex: number) {
             return method.apply(this, args) as void;
         };
 
+        return descriptor;
+    };
+}
+
+export function VoidToNull(): MethodDecorator {
+    return (target: object, propertyKey: string, descriptor: TypedPropertyDescriptor<any>) => {
+        if (!descriptor.value) return;
+        const method = descriptor.value as VoidFunction;
+        if (descriptor.value) {
+            descriptor.value = function (...args: any[]) {
+                return voidToNull(method.apply(this, args) as object);
+            };
+        }
         return descriptor;
     };
 }

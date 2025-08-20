@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { isNil, isObject } from '@nestjs/common/utils/shared.utils';
 import { BotParentSessionDTO } from './dto/bot.parent.session.dto';
 import { BotParentService } from './bot.parent.service';
@@ -9,14 +9,18 @@ import { actionTypes, availableActions } from './lib/bot.parent.const';
 export class BotParentSessionService {
     static DEFAULT_ACTIONS = [availableActions.HELP, availableActions.ADD_TOKEN];
 
+    private logger = new Logger(BotParentSessionService.name);
+
     constructor(private botParentService: BotParentService) {}
 
     public async initSession(ctx: BotContext) {
+        this.logger.debug('start initSession method');
         ctx.session.bot = new BotParentSessionDTO();
 
         const { bot } = ctx.session;
         if (isNil(bot.isNewUser)) {
             const dbHasUser = isObject(ctx.myChatMember) ? await this.botParentService.hasUser(ctx.myChatMember.from.id) : false;
+            this.logger.debug('dbHasUser', dbHasUser);
             this.setIsNewUser(ctx, !dbHasUser);
             this.setIsUserHasBot(ctx, !bot.isNewUser);
         }

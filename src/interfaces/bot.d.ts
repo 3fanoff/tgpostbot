@@ -9,8 +9,10 @@ type TelegrafI18nService<P> = {
     t(key: P, options?: TranslateOptions): string;
 };
 
-export interface BotSession {
+export interface BotBaseSession {
     language: string | null | undefined;
+}
+export interface BotSession extends BotBaseSession {
     ctx_action: number;
     bot: BotData;
 }
@@ -29,12 +31,12 @@ interface BotData {
     messages: Array<BotDataMessage>;
 }
 
-interface BotContextAdditions<S extends BotSession = BotSession> {
+interface BotContextAdditions<S extends BotBaseSession = BotSession> {
     i18n: TelegrafI18nService<I18nPath>;
     session: S;
 }
 
-interface BotContext<S extends BotSession = BotSession, U = Update> extends BotContextAdditions<S>, ContextTelegraf<U> {
+interface BotContext<S extends BotBaseSession = BotSession, U = Update> extends BotContextAdditions<S>, ContextTelegraf<U> {
     system: boolean;
 }
 
@@ -75,6 +77,10 @@ export type BotFullContext<S = BotSession> = BotMessageContext<S> | BotCallbackC
 interface DriverError extends Error {
     code: string;
     table: string;
+}
+
+interface PartialSource {
+    chatMemberCount: number;
 }
 
 export declare namespace BotParent {

@@ -3,6 +3,9 @@ services:
   server_node:
     container_name: "tgpostbot"
     build: ./
+    environment:
+      - TZ=Europe/Moscow
+      - LC_TIME=en_US.UTF-8
     ports:
       - "3002:3000"
     volumes:

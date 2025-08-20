@@ -13,6 +13,7 @@ import { message } from 'telegraf/filters';
 import { BotParentKeyboard } from '../lib/bot.parent.keyboard';
 import { QueryFailedError } from 'typeorm';
 import { InvalidArgumentException } from '@decorator/bot.decorator';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class BotParentAddbotComposer extends AbstractBotComposer {
@@ -21,6 +22,7 @@ export class BotParentAddbotComposer extends AbstractBotComposer {
     constructor(
         private botSessionService: BotParentSessionService,
         private botParentService: BotParentService,
+        private eventEmitter: EventEmitter2,
     ) {
         super();
     }
@@ -57,6 +59,8 @@ export class BotParentAddbotComposer extends AbstractBotComposer {
                     ctx.i18n.t('bot.parent.add.success', { args: { username } }),
                     BotParentKeyboard.staticKeyboard(ctx.i18n).resize(true),
                 );
+
+                this.eventEmitter.emit('bot.add.success', botDto);
             }
         } catch (e) {
             replyMessage = await ctx.reply(
@@ -73,6 +77,7 @@ export class BotParentAddbotComposer extends AbstractBotComposer {
 
     private async createBotAndAddToUser(ctx: BotContext, botDto: BotDto, userID: number, username?: string) {
         const bot: BotEntity = await this.botParentService.createBot(botDto);
+        console.log('after save bot');
 
         if (this.botSessionService.isNewUser(ctx)) {
             const user: BotUserEntity = await this.botParentService.createUser(userID, username);

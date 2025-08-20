@@ -9,6 +9,9 @@ export class BotEntity extends AbstractBotEntity {
     @Column({ unique: true, type: 'varchar', length: 100 })
     token: string;
 
+    @Column({ name: 'active', default: true })
+    isActive: boolean;
+
     @ManyToOne(() => BotUserEntity, (user) => user.own)
     owner: BotUserEntity;
 
